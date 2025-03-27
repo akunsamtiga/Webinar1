@@ -1,147 +1,187 @@
-"use client";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { ArrowRightIcon } from "@heroicons/react/24/solid";
+'use client';
+import { motion, useAnimation } from 'framer-motion';
+import { useEffect } from 'react';
+import Image from 'next/image';
+import { ArrowRightIcon, CalendarIcon, ClockIcon, PlayCircleIcon } from '@heroicons/react/24/solid';
 
-export default function Hero() {
-  const [isVisible, setIsVisible] = useState(false);
+const Hero = () => {
+  const controls = useAnimation();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
+    controls.start('visible');
+  }, [controls]);
 
-    const section = document.getElementById("hero-section");
-    if (section) observer.observe(section);
-
-    return () => {
-      if (section) observer.unobserve(section);
-    };
-  }, []);
-
-  // Variants untuk animasi scale secara bergantian dengan delay 1 detik per gambar
-  const imageAnimation = {
-    animate: (delay) => ({
-      scale: [1, 1.05, 1], // Scale naik ke 1.05 lalu kembali ke 1
+  // Animasi Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
       transition: {
-        duration: 1.5, // Durasi satu siklus animasi per gambar
-        repeat: Infinity, // Looping terus menerus
-        ease: "easeInOut",
-        delay: delay, // Delay yang berbeda untuk tiap gambar agar berjalan bergantian
-      },
-    }),
+        staggerChildren: 0.15,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 12,
+        stiffness: 100
+      }
+    }
   };
 
   return (
-    <section
-      id="hero-section"
-      className="relative flex flex-col md:flex-row items-center justify-center md:justify-between min-h-screen px-4 md:px-8 lg:px-20 py-10 text-white"
-    >
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section className="relative w-full min-h-screen overflow-hidden">
+      {/* Background Image dengan Overlay */}
+      <div className="absolute inset-0 z-0">
         <Image
-          src="/images/webinar3.jpg"
-          alt="Webinar AI"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
+          src="/images/webinar3.jpg" // Ganti dengan path gambar Anda
+          alt="Background Webinar"
+          fill
           priority
+          quality={100}
+          className="object-cover"
+          sizes="100vw"
         />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-60"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 to-green-800/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900/30 via-transparent to-green-800/30"></div>
       </div>
 
-      {/* Konten Kiri (Judul & CTA) */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left max-w-lg md:max-w-md lg:max-w-2xl md:ml-8"
-        initial={{ opacity: 0, y: 50 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        {/* Judul */}
-        <motion.h1
-          className="text-3xl sm:text-4xl md:text-4xl lg:text-6xl font-extrabold leading-tight px-5 md:px-0 md:pr-8 lg:pr-10"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
-        >
-          Webinar: Inovasi AI dalam Dunia Bisnis
-        </motion.h1>
-
-        {/* Deskripsi */}
-        <motion.p
-          className="mt-4 text-base sm:text-lg md:text-base lg:text-xl text-gray-300 pr-0 md:pr-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.5 }}
-        >
-          Temukan bagaimana kecerdasan buatan merevolusi industri dan strategi bisnis global.
-        </motion.p>
-
-        {/* Tombol CTA */}
-        <motion.a
-          href="#register"
-          className="mt-6 inline-flex items-center px-6 md:px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition"
-          style={{
-            backgroundColor: "#007bff",
-            color: "#fff",
-            transition: "background-color 0.3s ease",
-          }}
-          whileHover={{ scale: 1.05, backgroundColor: "#0056b3" }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Daftar Sekarang
-          <ArrowRightIcon className="w-6 h-6 ml-3" />
-        </motion.a>
-      </motion.div>
-
-      {/* Gambar Karakter PNG (Samping Kanan) */}
-      <motion.div
-        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-12 md:mt-0 md:gap-2 md:mr-4"
-        initial={{ opacity: 0, x: 50 }}
-        animate={isVisible ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        {[
-          { src: "/images/pp2.png", name: "Kim Jisoo, Ph.D.", title: "Pakar AI & Otomasi" },
-          { src: "/images/pp4.png", name: "Park Minji, M.Sc.", title: "Spesialis Machine Learning" },
-          { src: "/images/pp6.png", name: "Lee Haneul, S.T.", title: "Data Scientist Senior" },
-        ].map((person, index) => (
+      {/* Main Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-16 pb-28 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+          {/* Text Content */}
           <motion.div
-            key={index}
-            className="flex flex-col items-center text-center"
-            initial={{ opacity: 0, x: 50 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.2 }}
+            initial="hidden"
+            animate={controls}
+            variants={containerVariants}
           >
-            {/* Gambar dengan animasi looping yang bergantian */}
+            {/* Premium Badge */}
             <motion.div
-              className="relative bg-gray-300 w-18 h-18 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-40 lg:h-40 border-2 border-gray-200 rounded-full overflow-hidden"
-              variants={imageAnimation}
-              initial="initial"
-              animate="animate"
-              custom={index * 1} // Delay bergantian (0s, 1s, 2s)
+              variants={itemVariants}
+              className="inline-flex items-center px-4 py-2 rounded-full bg-green-500/20 backdrop-blur-sm border border-green-400/30 text-green-100 text-sm font-medium mb-6 shadow-lg"
             >
-              <Image
-                src={person.src}
-                alt={person.name}
-                layout="fill"
-                objectFit="cover"
-              />
+              <span className="w-2.5 h-2.5 rounded-full bg-green-300 mr-2 animate-pulse"></span>
+              Sesi Eksklusif • Kuota Terbatas
             </motion.div>
 
-            {/* Nama & Gelar */}
-            <p className="mt-3 text-sm sm:text-base md:text-sm lg:text-lg font-semibold">{person.name}</p>
-            <p className="text-xs sm:text-sm md:text-xs lg:text-base text-gray-300">{person.title}</p>
+            {/* Title */}
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white"
+            >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-green-100">
+                Transformasi Digital
+              </span>{' '}
+              <br />
+              <span className="text-white">dengan Kecerdasan Buatan</span>
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p
+              variants={itemVariants}
+              className="text-lg sm:text-xl text-green-100 mt-6 mb-8 max-w-2xl leading-relaxed"
+            >
+              Kuasai teknik mutakhir implementasi AI dalam bisnis melalui workshop interaktif bersama praktisi industri ternama.
+            </motion.p>
+
+            {/* Info Box */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-6 mb-10"
+            >
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-5 py-3 rounded-xl shadow-lg border border-green-300/20">
+                <CalendarIcon className="w-6 h-6 text-green-300 mr-3" />
+                <div>
+                  <p className="text-xs text-green-200">Tanggal</p>
+                  <p className="font-medium text-white">25 Juni 2024</p>
+                </div>
+              </div>
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-5 py-3 rounded-xl shadow-lg border border-green-300/20">
+                <ClockIcon className="w-6 h-6 text-green-300 mr-3" />
+                <div>
+                  <p className="text-xs text-green-200">Waktu</p>
+                  <p className="font-medium text-white">19:00 - 21:00 WIB</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-4 items-start"
+            >
+              <motion.button
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: '0 10px 25px -5px rgba(74, 222, 128, 0.5)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white px-8 py-4 rounded-xl shadow-lg font-bold transition-all duration-300"
+              >
+                <PlayCircleIcon className="w-6 h-6" />
+                Daftar Sekarang - Gratis!
+              </motion.button>
+
+              <motion.button
+                whileHover={{ 
+                  scale: 1.02,
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 rounded-xl border-2 border-green-300 text-green-100 font-medium hover:bg-white/10 transition-colors shadow-lg"
+              >
+                Lihat Kurikulum
+              </motion.button>
+            </motion.div>
           </motion.div>
-        ))}
-      </motion.div>
+
+          {/* Image Content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              transition: { delay: 0.4, duration: 0.8 }
+            }}
+            className="relative h-full w-full min-h-[400px] lg:min-h-[500px]"
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Main Illustration */}
+              <motion.div
+                animate={{
+                  y: [0, -15, 0],
+                  transition: {
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="relative w-full h-full max-w-xl mx-auto"
+              >
+                <Image
+                  src="/images/webinar3.jpg"
+                  alt="AI Illustration"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                  quality={100}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
     </section>
   );
-}
+};
+
+export default Hero;

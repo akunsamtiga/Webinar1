@@ -1,112 +1,206 @@
-"use client";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Image from "next/image";
+'use client';
+import { motion } from 'framer-motion';
+import { PlayCircleIcon, CheckBadgeIcon, LightBulbIcon, UserGroupIcon, ChartBarIcon } from '@heroicons/react/24/solid';
 
-export default function About() {
-  const [scrollY, setScrollY] = useState(0);
+const About = () => {
+  // Data fitur webinar
+  const features = [
+    {
+      icon: <LightBulbIcon className="w-8 h-8 text-green-500" />,
+      title: "Materi Inovatif",
+      desc: "Kurikulum berbasis kasus nyata industri terkini"
+    },
+    {
+      icon: <UserGroupIcon className="w-8 h-8 text-green-500" />,
+      title: "Networking",
+      desc: "Interaksi langsung dengan praktisi dan peserta lain"
+    },
+    {
+      icon: <ChartBarIcon className="w-8 h-8 text-green-500" />,
+      title: "Data Terkini",
+      desc: "Analisis tren AI 2024 dan prediksi masa depan"
+    },
+    {
+      icon: <CheckBadgeIcon className="w-8 h-8 text-green-500" />,
+      title: "Sertifikat",
+      desc: "Bukti partisipasi yang bisa dibagikan di LinkedIn"
+    }
+  ];
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Variants animasi
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
 
   return (
-    <section
-      id="about-section"
-      className="relative bg-white flex flex-col md:flex-row items-center justify-center min-h-screen px-6 sm:px-10 md:px-16 lg:px-24 py-10 text-white overflow-hidden"
-    >
-      {/* Background Shapes */}
-      <motion.div
-        className="absolute w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-green-300 opacity-20 rounded-full filter blur-3xl"
-        style={{
-          top: `calc(15% - ${scrollY * 0.1}px)`,
-          left: "5%",
-        }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      />
-      <motion.div
-        className="absolute w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 bg-purple-300 opacity-20 rounded-full filter blur-3xl"
-        style={{
-          top: `calc(50% - ${scrollY * 0.15}px)`,
-          right: "10%",
-        }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-      />
-      <motion.div
-        className="absolute w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 bg-pink-300 opacity-20 rounded-full filter blur-3xl"
-        style={{
-          top: `calc(85% - ${scrollY * 0.2}px)`,
-          left: "50%",
-          transform: "translateX(-50%)",
-        }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-      />
+    <section className="relative py-20 bg-gradient-to-b from-green-50 to-white overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-10">
+        <div className="absolute top-20 right-20 w-64 h-64 bg-green-300 rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-green-400 rounded-full filter blur-3xl"></div>
+      </div>
 
-      {/* Konten Kiri (Gambar) */}
-      <motion.div
-        className="relative w-full md:w-1/2 flex justify-center md:justify-start lg:justify-center"
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true }}
-      >
-        <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80">
-          <Image
-            src="/images/webinar3.jpg"
-            alt="Tentang Webinar"
-            layout="fill"
-            objectFit="contain"
-            className="drop-shadow-lg px-0 md:px-6"
-            priority
-          />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Header Section */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={containerVariants}
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16"
+        >
+          <motion.h2 
+            variants={itemVariants}
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-4"
+          >
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">
+              Tentang Webinar
+            </span>
+          </motion.h2>
+          <motion.p 
+            variants={itemVariants}
+            className="text-lg text-green-700 max-w-3xl mx-auto"
+          >
+            Pelajari bagaimana revolusi AI dapat mentransformasi bisnis Anda dalam 2 jam sesi intensif.
+          </motion.p>
+        </motion.div>
+
+        {/* Video Trailer - Autoplay dengan Sound Muted */}
+        <motion.div 
+          className="mb-16 rounded-2xl overflow-hidden shadow-xl border border-green-200 aspect-video max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/A_8RQ1IkRGE?si=UOzJAj-DUd5Ie5hm?autoplay=1&loop=1&controls=1&rel=0"
+            title="Webinar Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        </motion.div>
+
+        {/* Konten Utama */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Deskripsi */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
+            <h3 className="text-2xl font-bold text-green-800">Apa yang Akan Anda Pelajari?</h3>
+            <p className="text-green-700 leading-relaxed">
+              Dalam webinar eksklusif ini, kami akan membongkar strategi implementasi AI yang telah terbukti meningkatkan efisiensi operasional bisnis hingga 73%.
+            </p>
+            <ul className="space-y-4">
+              {[
+                "Fundamental AI untuk bisnis",
+                "Tools terkini yang bisa langsung diaplikasikan",
+                "Studi kasus: Kesuksesan dan kegagalan",
+                "Roadmap transformasi digital dengan AI"
+              ].map((item, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.1 * i }}
+                  viewport={{ once: true }}
+                  className="flex items-start text-green-800"
+                >
+                  <span className="inline-block w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                    <CheckBadgeIcon className="w-4 h-4 text-green-600" />
+                  </span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Fitur Webinar */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          >
+            {features.map((feature, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ y: -5 }}
+                className="bg-white p-6 rounded-xl shadow-md border border-green-100 hover:shadow-lg transition-all"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-green-50 rounded-lg mr-4">
+                    {feature.icon}
+                  </div>
+                  <h4 className="text-lg font-bold text-green-900">{feature.title}</h4>
+                </div>
+                <p className="text-green-700 text-sm">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </motion.div>
 
-      {/* Konten Kanan (Teks dan Grid Fitur) */}
-      <motion.div
-        className="relative w-full md:w-1/2 mt-8 md:mt-0 text-center md:text-left"
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="text-3xl text-gray-800 sm:text-3xl md:text-4xl font-extrabold leading-tight">
-          Tentang
-        </h2>
-        <p className="mt-4 text-base sm:text-lg text-gray-600 px-2 md:px-0">
-          Webinar ini dirancang untuk memberikan wawasan mendalam tentang perkembangan terbaru dalam kecerdasan buatan dan teknologi masa depan.
-        </p>
-
-        {/* Grid untuk Fitur */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { title: "Pembicara Ahli", desc: "Dari universitas & perusahaan teknologi terkemuka." },
-            { title: "Materi Berkualitas", desc: "Pembelajaran mendalam & studi kasus nyata." },
-            { title: "Sertifikat Resmi", desc: "Dapatkan sertifikat yang diakui industri." },
-            { title: "Networking", desc: "Bertemu dengan profesional dan praktisi AI." },
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              className="p-6 bg-gradient-to-b from-[#F0FFF050] to-[#F0FFF080] rounded-lg shadow-md hover:scale-[95%] transition duration-500"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: index * 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-xl text-gray-600 font-bold">{feature.title}</h3>
-              <p className="text-gray-500 text-sm mt-2">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+        {/* Target Audience */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-20 bg-green-600/10 backdrop-blur-sm p-8 rounded-2xl border border-green-200"
+        >
+          <h3 className="text-2xl font-bold text-green-900 mb-6 text-center">Untuk Siapa Webinar Ini?</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Profesional Bisnis",
+                desc: "CEO, Manajer, dan Decision Maker yang ingin memanfaatkan AI"
+              },
+              {
+                title: "Developer & IT Specialist",
+                desc: "Yang ingin mengintegrasikan AI ke dalam sistem perusahaan"
+              },
+              {
+                title: "Startup Founder",
+                desc: "Mencari competitive edge dengan teknologi terkini"
+              }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-6 rounded-lg shadow-sm border border-green-100">
+                <h4 className="font-bold text-green-800 text-lg mb-2">{item.title}</h4>
+                <p className="text-green-700 text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
-}
+};
+
+export default About;
