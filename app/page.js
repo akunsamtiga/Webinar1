@@ -7,11 +7,13 @@ import Pricing from "./components/Pricing";
 import FAQ from "./components/FAQ";
 import Registration from "./components/Registration";
 import Sponsorship from "./components/Sponsorship";
+import Message from "./components/Message";
 
 export default function Home() {
   return (
     <>
       <main>
+        <Message />
         <Hero />
         <About />
         <Speakers />

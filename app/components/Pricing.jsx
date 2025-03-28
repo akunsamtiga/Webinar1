@@ -74,7 +74,7 @@ const Pricing = () => {
   };
 
   return (
-    <section className="relative py-20 bg-gradient-to-b from-green-50 to-white overflow-hidden">
+    <section className="relative py-12 bg-gradient-to-b from-green-50 to-white overflow-hidden">
       {/* Dekorasi background */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-green-300 rounded-full filter blur-3xl"></div>
@@ -123,7 +123,7 @@ const Pricing = () => {
             >
               {/* Badge Populer */}
               {plan.popular && (
-                <div className="absolute top-3 right-0 bg-green-500 text-white text-xs font-bold px-4 py-1 transform translate-x-2 -translate-y-2 rotate-12 flex items-center">
+                <div className="absolute top-5 right-0 bg-green-500 text-white text-xs font-bold px-4 py-1 transform translate-x-2 -translate-y-2 rotate-12 flex items-center">
                   <StarIcon className="w-3 h-3 mr-1" />
                   POPULER
                 </div>

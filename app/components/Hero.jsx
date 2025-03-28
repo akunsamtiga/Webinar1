@@ -54,7 +54,7 @@ const Hero = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-16 pb-28 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 h-full flex items-center pt-8 md:pt-16 pb-14 md:pb-28 relative z-10 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           {/* Text Content */}
           <motion.div
@@ -123,7 +123,7 @@ const Hero = () => {
                   boxShadow: '0 10px 25px -5px rgba(74, 222, 128, 0.5)'
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white px-8 py-4 rounded-xl shadow-lg font-bold transition-all duration-300"
+                className="flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white px-6 py-4 rounded-xl shadow-lg font-semibold transition-all duration-300"
               >
                 <PlayCircleIcon className="w-6 h-6" />
                 Daftar Sekarang - Gratis!
@@ -135,7 +135,7 @@ const Hero = () => {
                   backgroundColor: 'rgba(255, 255, 255, 0.15)'
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 rounded-xl border-2 border-green-300 text-green-100 font-medium hover:bg-white/10 transition-colors shadow-lg"
+                className="px-6 py-3 rounded-xl border-2 border-green-300 text-green-100 font-semibold hover:bg-white/10 transition-colors shadow-lg"
               >
                 Lihat Kurikulum
               </motion.button>
