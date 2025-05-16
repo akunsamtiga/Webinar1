@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { ArrowRightIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
 
@@ -8,324 +8,258 @@ const Registration = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log(data);
+    await new Promise(r => setTimeout(r, 1500));
     setIsSubmitting(false);
     setIsSuccess(true);
     reset();
     setTimeout(() => setIsSuccess(false), 5000);
   };
 
-  // Variants animasi
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  };
+  // Animasi ringan saja
+  const fadeIn = shouldReduceMotion
+    ? {}
+    : { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 
   return (
-    <section id="register" className="relative py-12 bg-gradient-to-b from-green-50 to-white overflow-hidden">
-      {/* Dekorasi background */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-300 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-green-400 rounded-full filter blur-3xl"></div>
+    <section
+      id="register"
+      className="py-12 bg-gradient-to-b from-green-50 to-white relative overflow-hidden"
+      aria-labelledby="register-heading"
+    >
+      {/* Background Decorative — lebih kecil dan fixed */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[-1]">
+        <div className="absolute top-1/4 left-1/4 w-40 h-40 bg-green-200 rounded-full blur-lg"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-56 h-56 bg-green-300 rounded-full blur-lg"></div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial="hidden"
           whileInView="visible"
-          variants={containerVariants}
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
+          variants={fadeIn}
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-          <motion.h2 
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-4"
-          >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">
+          <h2 id="register-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-2">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-400">
               Daftar Sekarang
             </span>
-          </motion.h2>
-          <motion.p 
-            variants={itemVariants}
-            className="text-lg text-green-700 max-w-3xl mx-auto"
-          >
-            Isi formulir berikut untuk mengamankan tempat Anda di webinar eksklusif ini.
-          </motion.p>
+          </h2>
+          <p className="text-lg text-green-700">
+            Isi formulir untuk mengamankan tempat di webinar eksklusif ini.
+          </p>
         </motion.div>
 
-        {/* Form dan Info */}
-        <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
-          {/* Form Pendaftaran */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Form */}
+          <motion.form
+            onSubmit={handleSubmit(onSubmit)}
+            initial="hidden"
+            whileInView="visible"
+            variants={fadeIn}
             viewport={{ once: true }}
-            className="w-full lg:w-1/2"
+            className="bg-white rounded-2xl shadow p-6 border border-green-100 flex-1"
+            role="form"
           >
-            <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-green-100">
-              {isSuccess ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-8"
+            {isSuccess ? (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={!shouldReduceMotion && { hidden: { scale: 0.9, opacity: 0 }, visible: { scale: 1, opacity: 1, transition: { duration: 0.4 } } }}
+                className="text-center py-8"
+                aria-live="polite"
+              >
+                <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" aria-hidden="true" />
+                <h3 className="text-2xl font-bold text-green-800 mb-2">Pendaftaran Berhasil!</h3>
+                <p className="text-green-700 mb-4">
+                  Email konfirmasi sudah dikirim. Cek inbox atau folder spam.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsSuccess(false)}
+                  className="text-green-600 hover:text-green-800 underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
                 >
-                  <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-green-800 mb-2">Pendaftaran Berhasil!</h3>
-                  <p className="text-green-700 mb-6">
-                    Kami telah mengirimkan email konfirmasi ke alamat Anda. Silakan cek inbox atau folder spam.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setIsSuccess(false)}
-                    className="text-green-600 hover:text-green-800 font-medium underline"
-                  >
-                    Daftar lagi
-                  </button>
-                </motion.div>
-              ) : (
-                <>
-                  <div className="space-y-5">
-                    {/* Nama Lengkap */}
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-green-800 mb-1">
-                        Nama Lengkap <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        {...register('name', { required: 'Nama lengkap wajib diisi' })}
-                        className={`w-full px-4 py-3 rounded-lg border ${errors.name ? 'border-red-300' : 'border-green-200'} focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                        placeholder="Masukkan nama lengkap"
-                      />
-                      {errors.name && (
-                        <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-                      )}
-                    </div>
+                  Daftar lagi
+                </button>
+              </motion.div>
+            ) : (
+              <>
+                <fieldset className="space-y-5">
+                  <legend className="sr-only">Form Pendaftaran Webinar</legend>
 
-                    {/* Email */}
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-green-800 mb-1">
-                        Email <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        {...register('email', { 
-                          required: 'Email wajib diisi',
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Email tidak valid'
-                          }
-                        })}
-                        className={`w-full px-4 py-3 rounded-lg border ${errors.email ? 'border-red-300' : 'border-green-200'} focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                        placeholder="email@contoh.com"
-                      />
-                      {errors.email && (
-                        <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-                      )}
-                    </div>
-
-                    {/* Nomor WhatsApp */}
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-green-800 mb-1">
-                        Nomor WhatsApp <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        {...register('phone', { 
-                          required: 'Nomor WhatsApp wajib diisi',
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: 'Hanya angka yang diperbolehkan'
-                          },
-                          minLength: {
-                            value: 10,
-                            message: 'Nomor terlalu pendek'
-                          }
-                        })}
-                        className={`w-full px-4 py-3 rounded-lg border ${errors.phone ? 'border-red-300' : 'border-green-200'} focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                        placeholder="81234567890"
-                      />
-                      {errors.phone && (
-                        <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-                      )}
-                    </div>
-
-                    {/* Perusahaan */}
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-green-800 mb-1">
-                        Perusahaan/Institusi
-                      </label>
-                      <input
-                        id="company"
-                        type="text"
-                        {...register('company')}
-                        className="w-full px-4 py-3 rounded-lg border border-green-200 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                        placeholder="Nama perusahaan (opsional)"
-                      />
-                    </div>
-
-                    {/* Paket */}
-                    <div>
-                      <label htmlFor="plan" className="block text-sm font-medium text-green-800 mb-1">
-                        Pilih Paket <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        id="plan"
-                        {...register('plan', { required: 'Pilih paket pendaftaran' })}
-                        className={`w-full px-4 py-3 rounded-lg border ${errors.plan ? 'border-red-300' : 'border-green-200'} focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                      >
-                        <option value="">-- Pilih Paket --</option>
-                        <option value="free">Early Bird (Gratis)</option>
-                        <option value="premium">Premium (Rp 299.000)</option>
-                        <option value="enterprise">Enterprise (Custom)</option>
-                      </select>
-                      {errors.plan && (
-                        <p className="mt-1 text-sm text-red-600">{errors.plan.message}</p>
-                      )}
-                    </div>
-
-                    {/* Pertanyaan */}
-                    <div>
-                      <label htmlFor="questions" className="block text-sm font-medium text-green-800 mb-1">
-                        Pertanyaan/Kebutuhan Khusus
-                      </label>
-                      <textarea
-                        id="questions"
-                        rows={3}
-                        {...register('questions')}
-                        className="w-full px-4 py-3 rounded-lg border border-green-200 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                        placeholder="Tulis pertanyaan atau kebutuhan khusus Anda..."
-                      ></textarea>
-                    </div>
+                  {/* Nama */}
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-green-800 mb-1">
+                      Nama Lengkap <span aria-hidden="true" className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      {...register('name', { required: 'Nama wajib diisi' })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.name ? 'border-red-400' : 'border-green-200'
+                      } focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
+                      placeholder="Nama lengkap"
+                    />
+                    {errors.name && (
+                      <p role="alert" className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                    )}
                   </div>
 
-                  {/* Submit Button */}
-                  <div className="mt-8">
-                    <motion.button
-                      type="submit"
-                      disabled={isSubmitting}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full flex justify-center items-center px-8 py-4 rounded-lg bg-gradient-to-r from-green-600 to-green-500 text-white font-bold shadow-lg hover:shadow-xl transition-all ${isSubmitting ? 'opacity-80' : ''}`}
+                  {/* Email */}
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-green-800 mb-1">
+                      Email <span aria-hidden="true" className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      {...register('email', {
+                        required: 'Email wajib diisi',
+                        pattern: { value: /^\S+@\S+\.\S+$/, message: 'Format email tidak valid' }
+                      })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.email ? 'border-red-400' : 'border-green-200'
+                      } focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
+                      placeholder="email@contoh.com"
+                    />
+                    {errors.email && (
+                      <p role="alert" className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                    )}
+                  </div>
+
+                  {/* Telepon */}
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-green-800 mb-1">
+                      WhatsApp <span aria-hidden="true" className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      {...register('phone', {
+                        required: 'Nomor wajib diisi',
+                        pattern: { value: /^[0-9]+$/, message: 'Hanya angka' },
+                        minLength: { value: 10, message: 'Minimal 10 digit' }
+                      })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.phone ? 'border-red-400' : 'border-green-200'
+                      } focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
+                      placeholder="08xxxxxxxxxx"
+                    />
+                    {errors.phone && (
+                      <p role="alert" className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
+                    )}
+                  </div>
+
+                  {/* Paket */}
+                  <div>
+                    <label htmlFor="plan" className="block text-sm font-medium text-green-800 mb-1">
+                      Pilih Paket <span aria-hidden="true" className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="plan"
+                      {...register('plan', { required: 'Pilih paket' })}
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.plan ? 'border-red-400' : 'border-green-200'
+                      } focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
                     >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Memproses...
-                        </>
-                      ) : (
-                        <>
-                          Daftar Sekarang
-                          <ArrowRightIcon className="w-5 h-5 ml-2" />
-                        </>
-                      )}
-                    </motion.button>
+                      <option value="">-- Pilih --</option>
+                      <option value="free">Early Bird (Gratis)</option>
+                      <option value="premium">Premium</option>
+                      <option value="enterprise">Enterprise</option>
+                    </select>
+                    {errors.plan && (
+                      <p role="alert" className="mt-1 text-sm text-red-600">{errors.plan.message}</p>
+                    )}
                   </div>
 
-                  {/* Privacy Policy */}
-                  <p className="mt-4 text-xs text-green-600 text-center">
-                    Dengan mendaftar, Anda menyetujui Syarat & Ketentuan dan Kebijakan Privasi kami.
-                  </p>
-                </>
-              )}
-            </form>
-          </motion.div>
+                  {/* Pertanyaan */}
+                  <div>
+                    <label htmlFor="questions" className="block text-sm font-medium text-green-800 mb-1">
+                      Pertanyaan / Kebutuhan
+                    </label>
+                    <textarea
+                      id="questions"
+                      rows={3}
+                      {...register('questions')}
+                      className="w-full px-4 py-2 rounded-lg border border-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                      placeholder="Tulis pertanyaan (opsional)"
+                    />
+                  </div>
+                </fieldset>
+
+                {/* Submit */}
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileHover={!shouldReduceMotion && { scale: 1.02 }}
+                  whileTap={!shouldReduceMotion && { scale: 0.98 }}
+                  className={`mt-6 w-full flex justify-center items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-lg transition-opacity ${
+                    isSubmitting ? 'opacity-70' : ''
+                  } focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500`}
+                >
+                  {isSubmitting ? (
+                    <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.37 0 0 5.37 0 12h4z"/>
+                    </svg>
+                  ) : (
+                    <>
+                      Daftar Sekarang
+                      <ArrowRightIcon className="w-5 h-5 ml-2" aria-hidden="true" />
+                    </>
+                  )}
+                </motion.button>
+
+                <p className="mt-4 text-xs text-green-600 text-center">
+                  Dengan mendaftar, Anda menyetujui <a href="/privacy" className="underline">Kebijakan Privasi</a>.
+                </p>
+              </>
+            )}
+          </motion.form>
 
           {/* Info Pendaftaran */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+          <motion.aside
+            initial="hidden"
+            whileInView="visible"
+            variants={fadeIn}
             viewport={{ once: true }}
-            className="w-full lg:w-1/2"
+            className="bg-green-600/10 backdrop-blur-sm p-6 rounded-2xl border border-green-100 flex-1"
+            aria-labelledby="info-heading"
           >
-            <div className="bg-green-600/10 backdrop-blur-sm p-8 rounded-2xl border border-green-200 h-full">
-              <h3 className="text-2xl font-bold text-green-900 mb-6">Informasi Pendaftaran</h3>
+            <h3 id="info-heading" className="text-2xl font-bold text-green-900 mb-4">Informasi Pendaftaran</h3>
+            <ul className="space-y-3 mb-6" role="list">
+              {[
+                "Akses ke webinar live",
+                "Materi presentasi (PDF)",
+                "Sertifikat partisipasi",
+                "Rekaman webinar (premium)",
+                "Bonus template eksklusif"
+              ].map((item, i) => (
+                <li key={i} className="flex items-start">
+                  <CheckCircleIcon className="w-5 h-5 text-green-500 mr-2 mt-0.5" aria-hidden="true" />
+                  <span className="text-green-800">{item}</span>
+                </li>
+              ))}
+            </ul>
 
-              <div className="space-y-6">
-                {/* Benefit List */}
-                <div>
-                  <h4 className="text-lg font-semibold text-green-800 mb-3">Apa yang Anda dapatkan:</h4>
-                  <ul className="space-y-3">
-                    {[
-                      "Akses ke webinar live",
-                      "Materi presentasi (PDF)",
-                      "Sertifikat partisipasi",
-                      "Rekaman webinar (untuk paket premium)",
-                      "Bonus template eksklusif"
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-start">
-                        <CheckCircleIcon className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                        <span className="text-green-800">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Payment Info */}
-                <div className="bg-white/80 p-5 rounded-xl border border-green-200">
-                  <h4 className="text-lg font-semibold text-green-800 mb-2">Metode Pembayaran:</h4>
-                  <p className="text-green-700 mb-3 text-sm">Untuk paket berbayar, pembayaran dapat dilakukan melalui:</p>
-                  <div className="flex flex-wrap gap-3">
-                    {['Bank Transfer', 'Credit Card', 'OVO', 'DANA', 'Gopay'].map((method, i) => (
-                      <span key={i} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
-                        {method}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Testimoni */}
-                <div className="bg-white/80 p-5 rounded-xl border border-green-200">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 mr-4">
-                      <div className="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center text-green-800 font-bold">
-                        AS
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-green-800 italic mb-2">
-                        "Webinar ini sangat informatif! Saya langsung bisa aplikasikan ilmunya di bisnis saya."
-                      </p>
-                      <p className="text-green-700 font-medium">Andi Susanto</p>
-                      <p className="text-green-600 text-sm">CEO RetailKu</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="bg-white/80 p-4 rounded-lg border border-green-200 mb-6">
+              <h4 className="text-lg font-semibold text-green-800 mb-2">Metode Pembayaran</h4>
+              <p className="text-green-700 text-sm mb-2">Transfer bank, Kartu kredit, OVO, DANA, GoPay.</p>
             </div>
-          </motion.div>
+
+            <div className="bg-white/80 p-4 rounded-lg border border-green-200">
+              <blockquote className="italic text-green-800">
+                “Webinar ini sangat membantu! Materinya langsung bisa diterapkan.”
+              </blockquote>
+              <cite className="block mt-2 text-green-700 font-medium">— Andi Susanto, CEO RetailKu</cite>
+            </div>
+          </motion.aside>
         </div>
       </div>
     </section>

@@ -4,24 +4,23 @@ import { motion } from 'framer-motion';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 
 const FAQ = () => {
-    const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const toggleAccordion = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
-    const toggleAccordion = (index) => {
-      setActiveIndex(activeIndex === index ? null : index);
-    };
-
-    const faqs = [
+  const faqs = [
     {
       question: "Bagaimana cara mengikuti webinar ini?",
-      answer: "Setelah mendaftar, Anda akan menerima email konfirmasi dengan link Zoom webinar 1 hari sebelum acara. Anda bisa join langsung melalui link tersebut saat webinar dimulai."
+      answer: "Setelah mendaftar, Anda akan menerima email konfirmasi dengan link Zoom webinar 1 hari sebelum acara."
     },
     {
       question: "Apakah akan ada rekaman jika saya tidak bisa hadir live?",
-      answer: "Ya, semua peserta paket Premium akan mendapatkan rekaman full webinar yang bisa diakses selama 1 tahun. Peserta gratis bisa upgrade ke paket Premium untuk mendapatkan rekaman."
+      answer: "Ya, semua peserta paket Premium akan mendapatkan rekaman full webinar yang bisa diakses selama 1 tahun."
     },
     {
       question: "Perangkat apa yang saya butuhkan untuk mengikuti?",
-      answer: "Anda hanya perlu perangkat (laptop/HP) dengan koneksi internet stabil. Kami sarankan menggunakan laptop untuk pengalaman terbaik."
+      answer: "Anda hanya perlu perangkat (laptop/HP) dengan koneksi internet stabil."
     },
     {
       question: "Apakah ada sertifikat partisipasi?",
@@ -29,136 +28,79 @@ const FAQ = () => {
     },
     {
       question: "Bisakah saya bertanya langsung ke pembicara?",
-      answer: "Tentu! Ada sesi Q&A khusus di akhir webinar. Peserta paket Premium akan mendapatkan prioritas pertanyaan."
+      answer: "Tentu! Ada sesi Q&A khusus di akhir webinar. Peserta Premium mendapat prioritas."
     },
     {
       question: "Apa kebijakan refund jika saya tidak puas?",
-      answer: "Kami menawarkan garansi 100% uang kembali jika Anda tidak puas dengan konten webinar. Cukup kirim email dalam 7 hari setelah acara."
+      answer: "Kami menawarkan garansi 100% uang kembali jika Anda tidak puas dengan konten webinar."
     }
   ];
 
-  // Variants animasi
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  };
-
   return (
-    <section className="relative py-20 bg-gradient-to-b from-white to-green-50 overflow-hidden">
-      {/* Dekorasi background */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-300 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-green-400 rounded-full filter blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <section className="py-20 bg-gradient-to-b from-white to-green-50 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={containerVariants}
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
-        >
-          <motion.h2 
-            variants={itemVariants}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-4"
-          >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">
-              Pertanyaan Umum
-            </span>
-          </motion.h2>
-          <motion.p 
-            variants={itemVariants}
-            className="text-lg text-green-700 max-w-3xl mx-auto"
-          >
-            Temukan jawaban untuk pertanyaan yang sering diajukan tentang webinar ini.
-          </motion.p>
-        </motion.div>
-
-        {/* FAQ Accordion */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={containerVariants}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto space-y-4"
-        >
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className="overflow-hidden rounded-xl border border-green-200 bg-white shadow-sm hover:shadow-md transition-all"
-            >
-              <button
-                onClick={() => toggleAccordion(index)}
-                className="w-full flex justify-between items-center p-6 text-left focus:outline-none"
-              >
-                <h3 className="text-lg font-semibold text-green-900">{faq.question}</h3>
-                {activeIndex === index ? (
-                  <ChevronUpIcon className="w-5 h-5 text-green-600" />
-                ) : (
-                  <ChevronDownIcon className="w-5 h-5 text-green-600" />
-                )}
-              </button>
-
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{
-                  height: activeIndex === index ? 'auto' : 0,
-                  opacity: activeIndex === index ? 1 : 0
-                }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="px-6 overflow-hidden"
-              >
-                <div className="pb-6 text-green-700">
-                  <p>{faq.answer}</p>
-                </div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* CTA Tambahan */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="text-center mb-16"
         >
-          <p className="text-green-700 mb-6">Masih ada pertanyaan lain?</p>
-          <motion.a
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">
+              Pertanyaan Umum
+            </span>
+          </h2>
+          <p className="text-lg text-green-700 max-w-3xl mx-auto">
+            Temukan jawaban untuk pertanyaan yang sering diajukan tentang webinar ini.
+          </p>
+        </motion.div>
+
+        {/* FAQ */}
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqs.map((faq, index) => {
+            const isOpen = activeIndex === index;
+            return (
+              <div
+                key={index}
+                className="rounded-xl border border-green-200 bg-white transition-shadow"
+              >
+                <button
+                  onClick={() => toggleAccordion(index)}
+                  aria-expanded={isOpen}
+                  className="w-full flex justify-between items-center p-5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+                >
+                  <span className="text-green-900 font-semibold">{faq.question}</span>
+                  {isOpen ? (
+                    <ChevronUpIcon className="w-5 h-5 text-green-600" />
+                  ) : (
+                    <ChevronDownIcon className="w-5 h-5 text-green-600" />
+                  )}
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 text-green-700">
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 text-center">
+          <p className="text-green-700 mb-4">Masih ada pertanyaan lain?</p>
+          <a
             href="#contact"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center justify-center px-8 py-4 rounded-lg bg-gradient-to-r from-green-600 to-green-500 text-white font-bold shadow-lg hover:shadow-xl transition-all"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition"
           >
             Hubungi Tim Kami
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
-          </motion.a>
-        </motion.div>
+          </a>
+        </div>
       </div>
     </section>
   );
