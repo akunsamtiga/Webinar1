@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: 'Elevinar',
+  title: 'Zychrome',
   description: 'Tingkatkan wawasanmu melalui webinar interaktif dan inspiratif dari para ahli terbaik.',
 };
 
