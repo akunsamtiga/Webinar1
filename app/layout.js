@@ -9,7 +9,7 @@ const poppins = Poppins({
 
 export const metadata = {
   title: 'Zychrome',
-  description: 'Tingkatkan wawasanmu melalui webinar interaktif dan inspiratif dari para ahli terbaik.',
+  description: 'Optimalkan kekuasaan skill kamu melalui webinar interaktif dan inspiratif dari para ahli terbaik.',
 };
 
 export default function RootLayout({ children }) {
