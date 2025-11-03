@@ -1,198 +1,320 @@
 'use client';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon, StarIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
+import { useState } from 'react';
+import { CheckIcon, StarIcon, GiftIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 const Pricing = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const pricingPlans = [
     {
-      name: "Early Bird",
+      name: "General Admission",
       price: "Gratis",
       duration: "",
       features: [
-        "Akses live webinar",
-        "Materi presentasi (PDF)",
-        "Sertifikat elektronik",
-        "Q&A terbatas"
+        "Akses ke semua sesi seminar",
+        "Goodie bag NH Bank",
+        "Welcome coffee & snack",
+        "E-certificate partisipasi",
+        "Kesempatan door prize"
       ],
       cta: "Daftar Sekarang",
       popular: false
     },
     {
-      name: "Premium",
-      price: "Rp 299.000",
-      duration: "per peserta",
+      name: "VIP Pass",
+      price: "Rp 150.000",
+      duration: "per orang",
       features: [
-        "Semua benefit Early Bird",
-        "Rekaman sesi (1 tahun akses)",
-        "Slide deck + template eksklusif",
-        "Prioritas Q&A",
-        "Bonus: Cheat Sheet AI Tools"
+        "Semua benefit General Admission",
+        "VIP seat (baris depan)",
+        "Exclusive NH Bank merchandise",
+        "Meet & greet dengan pemateri",
+        "Prioritas Q&A session",
+        "Voucher cashback Rp 200.000"
       ],
-      cta: "Pilih Paket Ini",
+      cta: "Pilih VIP Pass",
       popular: true
     },
     {
-      name: "Enterprise",
+      name: "Corporate Package",
       price: "Custom",
-      duration: "tim 5+ orang",
+      duration: "min. 10 orang",
       features: [
-        "Semua benefit Premium",
-        "Sesi konsultasi privat 30 menit",
-        "Laporan analisis kebutuhan AI",
-        "Diskon grup 20%",
-        "Dedicated account manager"
+        "Semua benefit VIP Pass",
+        "Reserved corporate seating",
+        "Dedicated customer service",
+        "Diskon grup hingga 30%",
+        "Konsultasi banking eksklusif",
+        "Corporate branding opportunity"
       ],
-      cta: "Hubungi Kami",
+      cta: "Hubungi Sales",
       popular: false
     }
   ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % pricingPlans.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + pricingPlans.length) % pricingPlans.length);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.15,
+        delayChildren: 0.2
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 12
+        damping: 15
       }
     }
   };
 
   return (
-    <section className="relative py-12 bg-gradient-to-b from-green-50 to-white overflow-hidden">
-      {/* Dekorasi background (optimized: smaller blur & no full layer) */}
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 w-full h-full z-[-1]">
-        <div className="absolute top-1/3 left-1/4 w-40 h-40 bg-green-200 rounded-full blur-xl"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-green-300 rounded-full blur-xl"></div>
-      </div>
-
+    <section className="relative py-16 sm:py-20 md:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
           initial="hidden"
           whileInView="visible"
           variants={containerVariants}
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
+          viewport={{ once: true, margin: "-50px" }}
+          className="text-center mb-12 sm:mb-16"
         >
           <motion.h2
             variants={itemVariants}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-900 mb-3"
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">
-              Investasi Pengetahuan
-            </span>
+            Pilih Paket Anda
           </motion.h2>
           <motion.p
             variants={itemVariants}
-            className="text-lg text-green-700 max-w-3xl mx-auto"
+            className="text-base sm:text-lg text-green-700 max-w-2xl mx-auto"
           >
-            Pilih paket yang sesuai dengan kebutuhan Anda. Nilai yang Anda dapatkan jauh lebih besar dari biaya investasinya.
+            Benefit eksklusif untuk setiap peserta
           </motion.p>
         </motion.div>
 
-        {/* Grid Paket */}
+        {/* Desktop Grid View */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           variants={containerVariants}
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+          className="hidden lg:grid grid-cols-3 gap-6 xl:gap-8 max-w-7xl mx-auto"
         >
           {pricingPlans.map((plan, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              className={`relative rounded-2xl overflow-hidden shadow-lg border-2 ${
-                plan.popular ? 'border-green-500' : 'border-green-200'
-              } hover:shadow-xl transition-all`}
+              whileHover={{ y: -8 }}
+              className={`relative bg-white rounded-2xl p-8 transition-all ${
+                plan.popular 
+                  ? 'border-2 border-green-500 shadow-xl shadow-green-100' 
+                  : 'border border-green-200 shadow-lg hover:shadow-xl hover:border-green-300'
+              }`}
               role="region"
               aria-labelledby={`plan-title-${index}`}
             >
               {plan.popular && (
-                <div className="absolute top-5 right-0 bg-green-500 text-white text-xs font-bold px-4 py-1 transform translate-x-2 -translate-y-2 rotate-12 flex items-center" aria-label="Paket paling populer">
-                  <StarIcon className="w-3 h-3 mr-1" />
-                  POPULER
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                  <div className="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
+                    <StarIcon className="w-3.5 h-3.5" />
+                    TERPOPULER
+                  </div>
                 </div>
               )}
 
-              <div className={`p-6 ${plan.popular ? 'bg-green-600' : 'bg-white'}`}>
+              <div className="mb-8">
                 <h3
                   id={`plan-title-${index}`}
-                  className={`text-xl font-bold ${plan.popular ? 'text-white' : 'text-green-900'}`}
+                  className="text-xl font-semibold text-green-900 mb-2"
                 >
                   {plan.name}
                 </h3>
-                <div className="my-4">
-                  <span className={`text-3xl font-extrabold ${plan.popular ? 'text-white' : 'text-green-600'}`}>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-green-600">
                     {plan.price}
                   </span>
                   {plan.duration && (
-                    <span className={`text-sm ${plan.popular ? 'text-green-100' : 'text-green-500'}`}>
+                    <span className="text-sm text-green-600/70">
                       / {plan.duration}
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="p-6 bg-white">
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start">
-                      <CheckCircleIcon className="w-5 h-5 mt-0.5 mr-2 text-green-400 flex-shrink-0" />
-                      <span className="text-green-800">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="mt-0.5 flex-shrink-0">
+                      <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+                        <CheckIcon className="w-3 h-3 text-green-600" />
+                      </div>
+                    </div>
+                    <span className="text-sm text-green-800">{feature}</span>
+                  </li>
+                ))}
+              </ul>
 
-                <motion.a
-                  href="#register"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`block w-full text-center px-6 py-3 rounded-lg font-bold ${
-                    plan.popular ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-green-100 hover:bg-green-200 text-green-800'
-                  } transition-colors focus:outline-none focus:ring-2 focus:ring-green-400`}
-                >
-                  {plan.cta}
-                  {index === 0 && <ArrowRightIcon className="w-4 h-4 inline ml-2" />}
-                </motion.a>
-              </div>
+              <motion.a
+                href="#register"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`block w-full text-center px-6 py-3 rounded-xl font-semibold transition-all ${
+                  plan.popular 
+                    ? 'bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white shadow-lg shadow-green-200' 
+                    : 'bg-green-50 hover:bg-green-100 text-green-700 border border-green-200'
+                }`}
+              >
+                {plan.cta}
+              </motion.a>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Garansi */}
+        {/* Mobile/Tablet Carousel View */}
+        <div className="lg:hidden relative px-4 sm:px-8">
+          <div className="overflow-hidden">
+            <motion.div
+              animate={{ x: `-${currentSlide * 100}%` }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="flex"
+            >
+              {pricingPlans.map((plan, index) => (
+                <div key={index} className="w-full flex-shrink-0 px-2">
+                  <div
+                    className={`relative bg-white rounded-2xl p-6 sm:p-8 max-w-md mx-auto transition-all ${
+                      plan.popular 
+                        ? 'border-2 border-green-500 shadow-xl shadow-green-100' 
+                        : 'border border-green-200 shadow-lg'
+                    }`}
+                    role="region"
+                    aria-labelledby={`plan-mobile-title-${index}`}
+                  >
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold px-4 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
+                          <StarIcon className="w-3.5 h-3.5" />
+                          TERPOPULER
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="mb-6 sm:mb-8 pt-2">
+                      <h3
+                        id={`plan-mobile-title-${index}`}
+                        className="text-lg sm:text-xl font-semibold text-green-900 mb-2"
+                      >
+                        {plan.name}
+                      </h3>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl sm:text-4xl font-bold text-green-600">
+                          {plan.price}
+                        </span>
+                        {plan.duration && (
+                          <span className="text-xs sm:text-sm text-green-600/70">
+                            / {plan.duration}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <ul className="space-y-3 mb-6 sm:mb-8">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <div className="mt-0.5 flex-shrink-0">
+                            <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+                              <CheckIcon className="w-3 h-3 text-green-600" />
+                            </div>
+                          </div>
+                          <span className="text-xs sm:text-sm text-green-800">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <motion.a
+                      href="#register"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`block w-full text-center px-6 py-3 rounded-xl font-semibold text-sm sm:text-base transition-all ${
+                        plan.popular 
+                          ? 'bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white shadow-lg shadow-green-200' 
+                          : 'bg-green-50 hover:bg-green-100 text-green-700 border border-green-200'
+                      }`}
+                    >
+                      {plan.cta}
+                    </motion.a>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Carousel Controls */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg text-green-600 hover:bg-green-50 transition-colors border border-green-200"
+            aria-label="Previous pricing plan"
+          >
+            <ChevronLeftIcon className="w-5 h-5" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg text-green-600 hover:bg-green-50 transition-colors border border-green-200"
+            aria-label="Next pricing plan"
+          >
+            <ChevronRightIcon className="w-5 h-5" />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {pricingPlans.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === currentSlide ? 'bg-green-600 w-8' : 'bg-green-300 w-1.5'
+                }`}
+                aria-label={`Go to plan ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Benefit Banner */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-16 bg-green-50/80 backdrop-blur-sm p-6 rounded-xl border border-green-200 max-w-3xl mx-auto text-center"
+          className="mt-12 sm:mt-16"
         >
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div className="bg-green-100 p-3 rounded-full" aria-hidden="true">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Ikon garansi">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-bold text-green-800">Garansi 100% Puas</h4>
-              <p className="text-green-700 text-sm mt-1">
-                Jika webinar tidak sesuai ekspektasi, kami kembalikan uang Anda tanpa pertanyaan.
-              </p>
+          <div className="max-w-3xl mx-auto bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-6 sm:p-8 shadow-xl shadow-green-200">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center sm:text-left">
+              <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full shadow-sm" aria-hidden="true">
+                <GiftIcon className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-lg sm:text-xl mb-1">Early Bird Special!</h4>
+                <p className="text-green-50 text-sm sm:text-base">
+                  50 pendaftar pertama mendapat voucher NH Bank <strong className="text-white">Rp 100.000</strong> + merchandise eksklusif
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>

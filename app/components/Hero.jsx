@@ -2,7 +2,7 @@
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { ArrowRightIcon, CalendarIcon, ClockIcon, PlayCircleIcon } from '@heroicons/react/24/solid';
+import { ArrowRightIcon, CalendarIcon, ClockIcon, SparklesIcon } from '@heroicons/react/24/solid';
 
 const Hero = () => {
   const controls = useAnimation();
@@ -41,25 +41,26 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/webinar3.webp"
-          alt="Latar belakang webinar AI"
+          alt="Latar belakang seminar mobile banking"
           fill
           quality={90}
           priority={false}
           sizes="100vw"
           className="object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 to-green-800/60 will-change-[opacity]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/30 via-transparent to-green-800/30 will-change-[opacity]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 to-green-800/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900/30 via-transparent to-green-800/30" />
       </div>
 
       {/* Main Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center pt-8 md:pt-16 pb-14 md:pb-28 relative z-10 max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
           {/* Text Content */}
           <motion.div
             initial="hidden"
             animate={controls}
             variants={containerVariants}
+            className="text-center lg:text-left"
           >
             <motion.div
               variants={itemVariants}
@@ -69,50 +70,52 @@ const Hero = () => {
                 className="w-2.5 h-2.5 rounded-full bg-green-300 mr-2 animate-pulse"
                 aria-hidden="true"
               ></span>
-              Sesi Eksklusif • Kuota Terbatas
+              Event Eksklusif • Launching Aplikasi Terbaru
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white"
             >
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-green-100">
-                Transformasi Digital
+                New & New
               </span>{' '}
               <br />
-              <span className="text-white">dengan Kecerdasan Buatan</span>
+              <span className="text-white">NH Bank Seminar</span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl text-green-100 mt-6 mb-8 max-w-2xl leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-green-100 mt-4 sm:mt-6 mb-6 sm:mb-8 max-w-2xl leading-relaxed mx-auto lg:mx-0"
             >
-              Kuasai teknik mutakhir implementasi AI dalam bisnis melalui workshop interaktif bersama praktisi industri ternama.
+              Revolusi perbankan digital dimulai dari sini. Nikmati pengalaman banking yang lebih mudah, cepat, dan aman dengan fitur-fitur inovatif NH All One Bank.
             </motion.p>
 
+            {/* Date & Time - Mobile: horizontal, Tablet+: horizontal */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-6 mb-10"
+              className="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-6 mb-8 sm:mb-10 justify-center lg:justify-start"
             >
-              <div className="flex items-center bg-white/10 backdrop-blur-sm px-5 py-3 rounded-xl shadow-lg border border-green-300/20">
-                <CalendarIcon className="w-6 h-6 text-green-300 mr-3" aria-hidden="true" />
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 sm:px-5 py-3 rounded-xl shadow-lg border border-green-300/20">
+                <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-green-300 mr-2 sm:mr-3" aria-hidden="true" />
                 <div>
                   <p className="text-xs text-green-200">Tanggal</p>
-                  <p className="font-medium text-white">25 Juni 2024</p>
+                  <p className="font-medium text-white text-xs sm:text-base">15 Des 2024</p>
                 </div>
               </div>
-              <div className="flex items-center bg-white/10 backdrop-blur-sm px-5 py-3 rounded-xl shadow-lg border border-green-300/20">
-                <ClockIcon className="w-6 h-6 text-green-300 mr-3" aria-hidden="true" />
+              <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 sm:px-5 py-3 rounded-xl shadow-lg border border-green-300/20">
+                <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-green-300 mr-2 sm:mr-3" aria-hidden="true" />
                 <div>
                   <p className="text-xs text-green-200">Waktu</p>
-                  <p className="font-medium text-white">19:00 - 21:00 WIB</p>
+                  <p className="font-medium text-white text-xs sm:text-base">09:00 - 12:00</p>
                 </div>
               </div>
             </motion.div>
 
+            {/* Buttons - Mobile: horizontal, Tablet+: horizontal */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 items-start"
+              className="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-4 items-start justify-center lg:justify-start"
             >
               <motion.button
                 whileHover={{
@@ -120,11 +123,11 @@ const Hero = () => {
                   boxShadow: '0 10px 25px -5px rgba(74, 222, 128, 0.5)',
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white px-6 py-4 rounded-xl shadow-lg font-semibold transition-all duration-300"
+                className="flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white px-3 sm:px-6 py-3 sm:py-4 rounded-xl shadow-lg font-semibold transition-all duration-300 text-xs sm:text-base"
                 aria-label="Daftar sekarang gratis"
               >
-                <PlayCircleIcon className="w-6 h-6" aria-hidden="true" />
-                Daftar Sekarang - Gratis!
+                <SparklesIcon className="w-4 h-4 sm:w-6 sm:h-6" aria-hidden="true" />
+                <span className="leading-tight">Daftar Sekarang</span>
               </motion.button>
 
               <motion.button
@@ -133,10 +136,10 @@ const Hero = () => {
                   backgroundColor: 'rgba(255, 255, 255, 0.15)',
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-6 py-3 rounded-xl border-2 border-green-300 text-green-100 font-semibold hover:bg-white/10 transition-colors shadow-lg"
-                aria-label="Lihat kurikulum"
+                className="px-3 sm:px-6 py-3 sm:py-4 rounded-xl border-2 border-green-300 text-green-100 font-semibold hover:bg-white/10 transition-colors shadow-lg text-xs sm:text-base leading-tight"
+                aria-label="Lihat fitur aplikasi"
               >
-                Lihat Kurikulum
+                Lihat Fitur
               </motion.button>
             </motion.div>
           </motion.div>
@@ -149,7 +152,7 @@ const Hero = () => {
               scale: 1,
               transition: { delay: 0.4, duration: 0.8 },
             }}
-            className="relative h-full w-full min-h-[400px] lg:min-h-[500px]"
+            className="relative h-64 sm:h-80 md:h-96 lg:h-full w-full lg:min-h-[500px] order-first lg:order-last"
           >
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
@@ -165,7 +168,7 @@ const Hero = () => {
               >
                 <Image
                   src="/images/webinar3.webp"
-                  alt="Ilustrasi transformasi digital dengan AI"
+                  alt="Ilustrasi aplikasi mobile banking NH All One"
                   fill
                   quality={90}
                   priority={true}

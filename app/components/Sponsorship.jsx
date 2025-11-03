@@ -3,31 +3,24 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 const Sponsorship = () => {
-  // Data sponsor dan partner
   const sponsors = [
     {
-      name: "Nodeflux",
-      logo: "/images/1.png",
+      name: "Telkom Indonesia",
+      logo: "/images/3.png",
       tier: "platinum",
-      url: "https://www.nodeflux.io/"
+      url: "https://www.telkom.co.id/"
+    },
+    {
+      name: "XL Axiata",
+      logo: "/images/4.png",
+      tier: "gold",
+      url: "https://www.xl.co.id/"
     },
     {
       name: "Bukalapak",
       logo: "/images/2.png",
       tier: "gold",
       url: "https://www.bukalapak.com/"
-    },
-    {
-      name: "Telkom Indonesia",
-      logo: "/images/3.png",
-      tier: "gold",
-      url: "https://www.telkom.co.id/"
-    },
-    {
-      name: "XL Axiata",
-      logo: "/images/4.png",
-      tier: "silver",
-      url: "https://www.xl.co.id/"
     },
     {
       name: "Elang Mahkota Teknologi",
@@ -40,10 +33,15 @@ const Sponsorship = () => {
       logo: "/images/6.webp",
       tier: "silver",
       url: "https://www.multipolar.com/"
+    },
+    {
+      name: "Nodeflux",
+      logo: "/images/1.png",
+      tier: "silver",
+      url: "https://www.nodeflux.io/"
     }
   ];
 
-  // Variants animasi
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,55 +66,51 @@ const Sponsorship = () => {
     }
   };
 
-  // Kelompokkan sponsor berdasarkan tier
   const platinumSponsors = sponsors.filter(sponsor => sponsor.tier === "platinum");
   const goldSponsors = sponsors.filter(sponsor => sponsor.tier === "gold");
   const silverSponsors = sponsors.filter(sponsor => sponsor.tier === "silver");
 
   return (
-    <section className="relative py-12 bg-gradient-to-b from-white to-green-50 overflow-hidden">
-      {/* Dekorasi background */}
+    <section className="relative py-12 sm:py-16 bg-gradient-to-b from-white to-green-50 overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-green-300 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-green-400 rounded-full filter blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Header */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           variants={containerVariants}
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-900 mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-900 mb-3 sm:mb-4"
           >
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">
-              Sponsor & Partner
+              Partner Kami
             </span>
           </motion.h2>
           <motion.p 
             variants={itemVariants}
-            className="text-lg text-green-700 max-w-3xl mx-auto"
+            className="text-base sm:text-lg text-green-700 max-w-3xl mx-auto px-4"
           >
-            Terima kasih kepada sponsor dan partner yang mendukung acara ini.
+            Terima kasih kepada partner yang mendukung peluncuran NH All One Bank
           </motion.p>
         </motion.div>
 
-        {/* Platinum Sponsors */}
         {platinumSponsors.length > 0 && (
           <motion.div
             initial="hidden"
             whileInView="visible"
             variants={containerVariants}
             viewport={{ once: true }}
-            className="mb-16"
+            className="mb-12 sm:mb-16"
           >
-            <h3 className="text-center text-xl font-semibold text-green-800 mb-8">Platinum Sponsor</h3>
-            <div className="flex flex-wrap justify-center gap-12">
+            <h3 className="text-center text-lg sm:text-xl font-semibold text-green-800 mb-6 sm:mb-8">Platinum Partner</h3>
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
               {platinumSponsors.map((sponsor, index) => (
                 <motion.a
                   key={index}
@@ -125,15 +119,15 @@ const Sponsorship = () => {
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center p-6 bg-white rounded-2xl shadow-md border border-green-100 hover:shadow-lg transition-all"
+                  className="flex items-center justify-center p-4 sm:p-6 bg-white rounded-2xl shadow-md border border-green-100 hover:shadow-lg transition-all"
                 >
-                  <div className="relative w-64 h-20">
+                  <div className="relative w-48 sm:w-64 h-16 sm:h-20">
                     <Image
                       src={sponsor.logo}
                       alt={sponsor.name}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 768px) 192px, 256px"
                     />
                   </div>
                 </motion.a>
@@ -142,17 +136,16 @@ const Sponsorship = () => {
           </motion.div>
         )}
 
-        {/* Gold Sponsors */}
         {goldSponsors.length > 0 && (
           <motion.div
             initial="hidden"
             whileInView="visible"
             variants={containerVariants}
             viewport={{ once: true }}
-            className="mb-16"
+            className="mb-12 sm:mb-16"
           >
-            <h3 className="text-center text-xl font-semibold text-green-800 mb-8">Gold Sponsors</h3>
-            <div className="flex flex-wrap justify-center gap-8">
+            <h3 className="text-center text-lg sm:text-xl font-semibold text-green-800 mb-6 sm:mb-8">Gold Partners</h3>
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
               {goldSponsors.map((sponsor, index) => (
                 <motion.a
                   key={index}
@@ -161,15 +154,15 @@ const Sponsorship = () => {
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center p-5 bg-white rounded-xl shadow-sm border border-green-100 hover:shadow-md transition-all"
+                  className="flex items-center justify-center p-4 sm:p-5 bg-white rounded-xl shadow-sm border border-green-100 hover:shadow-md transition-all"
                 >
-                  <div className="relative w-48 h-16">
+                  <div className="relative w-36 sm:w-48 h-12 sm:h-16">
                     <Image
                       src={sponsor.logo}
                       alt={sponsor.name}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 768px) 144px, 192px"
                     />
                   </div>
                 </motion.a>
@@ -178,17 +171,16 @@ const Sponsorship = () => {
           </motion.div>
         )}
 
-        {/* Silver Sponsors */}
         {silverSponsors.length > 0 && (
           <motion.div
             initial="hidden"
             whileInView="visible"
             variants={containerVariants}
             viewport={{ once: true }}
-            className="mb-16"
+            className="mb-12 sm:mb-16"
           >
-            <h3 className="text-center text-xl font-semibold text-green-800 mb-8">Silver Sponsors</h3>
-            <div className="flex flex-wrap justify-center gap-6">
+            <h3 className="text-center text-lg sm:text-xl font-semibold text-green-800 mb-6 sm:mb-8">Silver Partners</h3>
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               {silverSponsors.map((sponsor, index) => (
                 <motion.a
                   key={index}
@@ -197,15 +189,15 @@ const Sponsorship = () => {
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center p-4 bg-white rounded-lg shadow-sm border border-green-100 hover:shadow-md transition-all"
+                  className="flex items-center justify-center p-3 sm:p-4 bg-white rounded-lg shadow-sm border border-green-100 hover:shadow-md transition-all"
                 >
-                  <div className="relative w-36 h-12">
+                  <div className="relative w-28 sm:w-36 h-10 sm:h-12">
                     <Image
                       src={sponsor.logo}
                       alt={sponsor.name}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 768px) 112px, 144px"
                     />
                   </div>
                 </motion.a>
@@ -214,24 +206,23 @@ const Sponsorship = () => {
           </motion.div>
         )}
 
-        {/* CTA Sponsor */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-12 bg-green-600/10 backdrop-blur-sm p-8 rounded-2xl border border-green-200 max-w-3xl mx-auto text-center"
+          className="mt-12 bg-green-600/10 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-green-200 max-w-3xl mx-auto text-center"
         >
-          <h3 className="text-2xl font-bold text-green-900 mb-4">Jadi Sponsor?</h3>
-          <p className="text-green-700 mb-6">Dapatkan eksposur brand Anda di depan audiens profesional dan dapatkan benefit eksklusif sebagai sponsor.</p>
+          <h3 className="text-xl sm:text-2xl font-bold text-green-900 mb-3 sm:mb-4">Jadi Partner NH Bank?</h3>
+          <p className="text-green-700 mb-4 sm:mb-6 text-sm sm:text-base">Bergabunglah dengan ekosistem perbankan digital terdepan dan dapatkan berbagai keuntungan eksklusif.</p>
           <motion.a
             href="#contact"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-white text-green-600 font-bold shadow-md hover:shadow-lg transition-all border border-green-300"
+            className="inline-flex items-center justify-center px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg bg-white text-green-600 font-bold shadow-md hover:shadow-lg transition-all border border-green-300 text-sm sm:text-base"
           >
-            Hubungi Tim Sponsorship
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            Hubungi Partnership Team
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </motion.a>
